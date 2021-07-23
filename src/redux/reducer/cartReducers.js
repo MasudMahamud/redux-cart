@@ -1,19 +1,30 @@
 import { ADD_TO_CART, REMOVE_FROM_CART } from "../actions/CartActions";
 
 const initialState = {
-    cart: []
+    cart: [],
+    product: [
+        { name: 'Nokia A11', price: 20000, id: 1 },
+        { name: 'Samsung M12', price: 14700, id: 2 },
+        { name: 'Redmi MI', price: 22000, id: 3 },
+        { name: 'Poco M3', price: 16000, id: 4 },
+        { name: 'Realme C21', price: 12000, id: 5 },
+    ]
 }
 
 const cartReducers = (state = initialState, action) => {
-    switch(action.type){
+    switch (action.type) {
         case ADD_TO_CART:
-            return {
-                cart: [...state.cart, action.id]
+            const newItem = {
+                productId: action.id,
+                name: action.name,
+                cartId: state.cart.length + 1
             }
+            const newCart = [...state.cart, newItem];
+            return { ...state, cart: newCart };
         case REMOVE_FROM_CART:
-            return {
-                cart: [...state.cart.filter(item => item !== action.id)]
-            }    
+            const id = action.id;
+            const remainingCart = state.cart.filter(item => item.cartId !== id)
+            return { ...state, cart: remainingCart }
         default:
             return state;
     }
